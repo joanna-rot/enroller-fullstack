@@ -11,7 +11,7 @@
       <button :class="signigUp ? 'button-outline' : '' " @click="signigUp=false">Logowanie</button>
       <button :class="!signigUp ? 'button-outline' :  '' " @click="signigUp=true">>Rejestracja</button>
 
-      <div v-if="message" class="alert">
+      <div v-if="message" class="alert1">
         {{message}}
       </div>
 
@@ -39,11 +39,34 @@ export default {
   },
   methods: {
     logMeIn(user) {
-      this.authenticatedUsername = user.login;
+      axios.post('api/tokens', user)
+          .then(response => {
+            this.authenticatedUsername = user.login;
+            const token = response.data.token;
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+            axios.get('api/meetings')
+                .then(response=> console.log(response.data));
+          })
+          .catch(response=> {
+            this.message='logowanie nieudane';
+          });
+
     },
-    logMeOut() {
-      this.authenticatedUsername = '';
+    logMeOut(user) {
+      axios.post('api/tokens', user)
+          .then(response=>{
+            this.authenticatedUsername = user.login;
+            const token = response.data.token;
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+            delete axios.defaults.headers.common.Authorization;
+          })
+          .catch(response=> {
+            this.message='usunięty token';
+          })
+
     },
+
+
     register(user) {
       axios.post('api/participants', user)
           .then(response => {
@@ -67,12 +90,21 @@ export default {
   margin: 0 auto;
 }
 
-.alert {
+.alert1 {
   max-width: 300px;
   margin: 20px;
   padding: 20px;
   color: green;
   font-family: Arial;
   border: 10px solid green;
+}
+
+.alert2 {
+  max-width: 300px;
+  margin: 20px;
+  padding: 20px;
+  color: darkred;
+  font-family: Arial;
+  border: 10px solid darkred;
 }
 </style>
