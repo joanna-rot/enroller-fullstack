@@ -8,7 +8,11 @@
     </div>
 
     <div v-else>
-      <LoginForm @login="(user) => logMeIn(user)"></LoginForm>
+      <button :class="signigUp ? 'button-outline' : '' " @click="signigUp=false">Logowanie</button>
+      <button :class="!signigUp ? 'button-outline' :  '' " @click="signigUp=true">>Rejestracja</button>
+
+      <LoginForm v-if="!signigUp" @login="(user) => logMeIn(user)"></LoginForm>
+      <LoginForm v-else @login="(user) => logMeIn(user)" button-label="Załóż konto"></LoginForm>
     </div>
   </div>
 </template>
@@ -23,6 +27,7 @@ export default {
   components: {LoginForm, MeetingsPage, UserPanel},
   data() {
     return {
+      signigUp: false,
       authenticatedUsername: '',
     }
   },
