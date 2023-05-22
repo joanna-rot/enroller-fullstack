@@ -96,7 +96,7 @@ export default {
   padding: 20px;
   color: green;
   font-family: Arial;
-  border: 10px solid green;
+  border: 10px solid darkred;
 }
 
 .alert2 {
