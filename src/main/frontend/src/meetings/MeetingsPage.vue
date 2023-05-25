@@ -14,6 +14,7 @@
 <script>
 import NewMeetingForm from "./NewMeetingForm";
 import MeetingsList from "./MeetingsList";
+import axios from "axios";
 
 export default {
   components: {NewMeetingForm, MeetingsList},
@@ -26,6 +27,17 @@ export default {
   methods: {
     addNewMeeting(meeting) {
       this.meetings.push(meeting);
+      axios.post('api/meetings', meeting)
+          .then(response => {
+            // udało się
+            this.message = 'Udało się dodać spotkanie'
+
+          })
+          .catch(response => {
+            // nie udało sie
+            this.message = 'Nie udało się dodać spotkania'
+          });
+
     },
     addMeetingParticipant(meeting) {
       meeting.participants.push(this.username);
@@ -35,6 +47,16 @@ export default {
     },
     deleteMeeting(meeting) {
       this.meetings.splice(this.meetings.indexOf(meeting), 1);
+      axios.delete('api/meetings', meeting)
+          .then(response => {
+            // udało się
+            this.message = 'Udało się usunąć spotkanie'
+
+          })
+          .catch(response => {
+            // nie udało sie
+            this.message = 'Nie udało się usunąć spotkania'
+          });
     },
   }
 }

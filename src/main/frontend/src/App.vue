@@ -52,18 +52,9 @@ export default {
           });
 
     },
-    logMeOut(user) {
-      axios.post('api/tokens', user)
-          .then(response=>{
-            this.authenticatedUsername = user.login;
-            const token = response.data.token;
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-            delete axios.defaults.headers.common.Authorization;
-          })
-          .catch(response=> {
-            this.message='usunięty token';
-          })
-
+    logMeOut() {
+      this.authenticatedUsername = '';
+      delete axios.defaults.headers.common.Authorization;
     },
 
 
@@ -94,9 +85,9 @@ export default {
   max-width: 300px;
   margin: 20px;
   padding: 20px;
-  color: green;
+  color: #9b4dca;
   font-family: Arial;
-  border: 10px solid darkred;
+  border: 10px solid #9b4dca;
 }
 
 .alert2 {
