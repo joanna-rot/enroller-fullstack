@@ -11,9 +11,15 @@
       <button :class="signigUp ? 'button-outline' : '' " @click="signigUp=false">Logowanie</button>
       <button :class="!signigUp ? 'button-outline' :  '' " @click="signigUp=true">>Rejestracja</button>
 
-      <div v-if="message" class="alert1">
-        {{message}}
+      <div v-if="message1" class="alert1">
+        {{message1}}
+
       </div>
+
+      <div v-else-if="message2" class="alert2">
+        {{message2}}
+      </div>
+
 
       <LoginForm v-if="!signigUp" @login="(user) => logMeIn(user)"></LoginForm>
       <LoginForm v-else @login="(user) => register(user)" button-label="Załóż konto"></LoginForm>
@@ -32,7 +38,8 @@ export default {
   components: {LoginForm, MeetingsPage, UserPanel},
   data() {
     return {
-      message: '',
+      message1: '',
+      message2: '',
       signigUp: false,
       authenticatedUsername: '',
     }
@@ -48,7 +55,7 @@ export default {
                 .then(response=> console.log(response.data));
           })
           .catch(response=> {
-            this.message='logowanie nieudane';
+            this.message2='logowanie nieudane';
           });
 
     },
@@ -62,12 +69,12 @@ export default {
       axios.post('api/participants', user)
           .then(response => {
             // udało się
-            this.message = 'Udało się założyć konto'
+            this.message1 = 'Udało się założyć konto'
 
           })
           .catch(response => {
             // nie udało sie
-            this.message = 'Nie udało się założyć konta'
+            this.message2 = 'Nie udało się założyć konta'
           });
     }
 
@@ -85,9 +92,9 @@ export default {
   max-width: 300px;
   margin: 20px;
   padding: 20px;
-  color: #9b4dca;
+  color: green;
   font-family: Arial;
-  border: 10px solid #9b4dca;
+  border: 10px solid green;
 }
 
 .alert2 {
