@@ -44,6 +44,17 @@ export default {
       authenticatedUsername: '',
     }
   },
+
+  mounted() {
+    const username = localStorage.getItem('username');
+    const token = localStorage.getItem('token');
+    if (username && token) {
+      this.storeAuth(username, token);
+      // if token expired or user has been deleted - logout!
+      axios.get(`/api/meetings`).catch(() => this.logMeOut());
+    }
+  },
+
   methods: {
     logMeIn(user) {
       axios.post('api/tokens', user)
@@ -59,17 +70,27 @@ export default {
           });
 
     },
+
     logMeOut() {
       this.authenticatedUsername = '';
       delete axios.defaults.headers.common.Authorization;
+      localStorage.clear();
+
     },
 
+    storeAuth(username, token) {
+      this.authenticatedUsername = username;
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      localStorage.setItem('username', username);
+      localStorage.setItem('token', token);
+    },
 
     register(user) {
       axios.post('api/participants', user)
           .then(response => {
             // udało się
             this.message1 = 'Udało się założyć konto'
+            this.signigUp = false;
 
           })
           .catch(response => {

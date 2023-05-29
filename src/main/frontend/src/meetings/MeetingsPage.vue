@@ -26,16 +26,16 @@ export default {
   },
   methods: {
     addNewMeeting(meeting) {
-      this.meetings.push(meeting);
       axios.post('api/meetings', meeting)
           .then(response => {
             // udało się
-            this.message = 'Udało się dodać spotkanie'
+            console.log = ('Udało się dodać spotkanie');
+            this.meetings.push(meeting);
 
           })
-          .catch(response => {
+          .catch(error => {
             // nie udało sie
-            this.message = 'Nie udało się dodać spotkania'
+            console.error = ('Nie udało się dodać spotkania', error);
           });
 
     },
@@ -46,17 +46,19 @@ export default {
       meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
     },
     deleteMeeting(meeting) {
-      this.meetings.splice(this.meetings.indexOf(meeting), 1);
-      axios.delete('api/meetings', meeting)
+      axios.delete('api/meetings' + meeting.id)
           .then(response => {
             // udało się
-            this.message = 'Udało się usunąć spotkanie'
+            console.log = ('Udało się usunąć spotkanie');
+            this.meetings.push(meeting);
 
           })
-          .catch(response => {
+          .catch(error => {
             // nie udało sie
-            this.message = 'Nie udało się usunąć spotkania'
+            console.error = ('Nie udało się usunąć spotkania', error);
           });
+          this.meetings.splice(this.meetings.indexOf(meeting), 1);
+
     },
   }
 }
