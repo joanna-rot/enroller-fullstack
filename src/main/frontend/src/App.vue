@@ -20,6 +20,10 @@
         {{message2}}
       </div>
 
+      <div v-else-if="message3" class="alert1">
+        {{message3}}
+      </div>
+
 
       <LoginForm v-if="!signigUp" @login="(user) => logMeIn(user)"></LoginForm>
       <LoginForm v-else @login="(user) => register(user)" button-label="Załóż konto"></LoginForm>
@@ -40,12 +44,14 @@ export default {
     return {
       message1: '',
       message2: '',
+      message3: '',
       signigUp: false,
       authenticatedUsername: '',
+      meetings: [],
     }
   },
 
-  mounted() {
+ /* mounted() {
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
     if (username && token) {
@@ -53,7 +59,7 @@ export default {
       // if token expired or user has been deleted - logout!
       axios.get(`/api/meetings`).catch(() => this.logMeOut());
     }
-  },
+  },*/
 
   methods: {
     logMeIn(user) {
@@ -74,16 +80,17 @@ export default {
     logMeOut() {
       this.authenticatedUsername = '';
       delete axios.defaults.headers.common.Authorization;
-      localStorage.clear();
+      this.message3='usunięto token';
+      //localStorage.clear();
 
     },
 
-    storeAuth(username, token) {
+    /*storeAuth(username, token) {
       this.authenticatedUsername = username;
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       localStorage.setItem('username', username);
       localStorage.setItem('token', token);
-    },
+    },*/
 
     register(user) {
       axios.post('api/participants', user)

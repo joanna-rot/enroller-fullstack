@@ -16,6 +16,7 @@ import NewMeetingForm from "./NewMeetingForm";
 import MeetingsList from "./MeetingsList";
 import axios from "axios";
 
+
 export default {
   components: {NewMeetingForm, MeetingsList},
   props: {username: String},
@@ -24,6 +25,7 @@ export default {
       meetings: []
     };
   },
+
   methods: {
     addNewMeeting(meeting) {
       axios.post('api/meetings', meeting)
@@ -33,31 +35,28 @@ export default {
             this.meetings.push(meeting);
 
           })
-          .catch(error => {
+          .catch(resopnse => {
             // nie udało sie
-            console.error = ('Nie udało się dodać spotkania', error);
+            console.log = ('Nie udało się dodać spotkania');
           });
 
     },
+
     addMeetingParticipant(meeting) {
       meeting.participants.push(this.username);
     },
     removeMeetingParticipant(meeting) {
       meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
     },
+
     deleteMeeting(meeting) {
-      axios.delete('api/meetings' + meeting.id)
+      axios.delete(`api/meetings/${meeting.id}`)
           .then(response => {
+            this.meetings.splice(this.meetings.indexOf(meeting), 1);
             // udało się
             console.log = ('Udało się usunąć spotkanie');
-            this.meetings.push(meeting);
-
           })
-          .catch(error => {
-            // nie udało sie
-            console.error = ('Nie udało się usunąć spotkania', error);
-          });
-          this.meetings.splice(this.meetings.indexOf(meeting), 1);
+
 
     },
   }
