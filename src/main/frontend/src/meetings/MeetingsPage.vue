@@ -22,7 +22,8 @@ export default {
   props: {username: String},
   data() {
     return {
-      meetings: []
+      meetings: [],
+      meeting: '',
     };
   },
 
@@ -52,11 +53,13 @@ export default {
     deleteMeeting(meeting) {
       axios.delete(`api/meetings/${meeting.id}`)
           .then(response => {
-            this.meetings.splice(this.meetings.indexOf(meeting), 1);
             // udało się
-            console.log = ('Udało się usunąć spotkanie');
+            console.log = (`Udało się usunąć spotkanie ${meeting.id}`);
+            this.meetings.splice(this.meetings.indexOf(meeting), 1);
           })
-
+          .catch(error => {
+            console.error(error);
+          });
 
     },
   }
