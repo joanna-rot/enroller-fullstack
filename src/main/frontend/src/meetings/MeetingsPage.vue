@@ -22,25 +22,43 @@ export default {
   props: {username: String},
   data() {
     return {
-      meetings: [],
-      meeting: '',
+      meetings: Array,
+
     };
+  },
+
+  mounted() {
+    this.getAllMeetings();
   },
 
   methods: {
     addNewMeeting(meeting) {
       axios.post('api/meetings', meeting)
           .then(response => {
+            //meeting.id = response.data.id;
             // udało się
             console.log = ('Udało się dodać spotkanie');
             this.meetings.push(meeting);
-
           })
           .catch(resopnse => {
             // nie udało sie
             console.log = ('Nie udało się dodać spotkania');
+
           });
 
+    },
+
+    getAllMeetings() {
+      axios.get('api/meetings')
+          .then(response => {
+            // udało się
+            //console.log(response.data);
+            this.meetings = response.data;
+          })
+          .catch(error => {
+            // nie udało się
+            console.error('Nie udało się pobnrać meetingów', error);
+          });
     },
 
     addMeetingParticipant(meeting) {
@@ -58,7 +76,7 @@ export default {
             this.meetings.splice(this.meetings.indexOf(meeting), 1);
           })
           .catch(error => {
-            console.error(error);
+            console.error('Nie udało się usunąć spotkania', error);
           });
 
     },

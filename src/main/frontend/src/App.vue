@@ -47,9 +47,10 @@ export default {
       message3: '',
       signigUp: false,
       authenticatedUsername: '',
-      meetings: [],
     }
   },
+
+
 
  /* mounted() {
     const username = localStorage.getItem('username');
@@ -68,14 +69,16 @@ export default {
             this.authenticatedUsername = user.login;
             const token = response.data.token;
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-            axios.get('api/meetings')
-                .then(response=> console.log(response.data));
+            //axios.get('api/meetings')
+                //.then(response=> console.log(response.data));
           })
           .catch(response=> {
             this.message2='logowanie nieudane';
           });
 
     },
+
+
 
     logMeOut() {
       this.authenticatedUsername = '';
