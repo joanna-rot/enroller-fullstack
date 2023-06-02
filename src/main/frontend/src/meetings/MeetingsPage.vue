@@ -35,7 +35,7 @@ export default {
     addNewMeeting(meeting) {
       axios.post('api/meetings', meeting)
           .then(response => {
-            //meeting.id = response.data.id;
+            meeting.id = response.data.id;
             // udało się
             console.log = ('Udało się dodać spotkanie');
             this.meetings.push(meeting);
