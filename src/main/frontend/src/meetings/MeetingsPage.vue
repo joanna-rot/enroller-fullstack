@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       meetings: Array,
-
+      login: String,
     };
   },
 
@@ -62,8 +62,21 @@ export default {
     },
 
     addMeetingParticipant(meeting) {
-      meeting.participants.push(this.username);
+      const meetingId = meeting.id;
+      const participantLogin = this.username;
+      axios.post(`api/meetings/${meetingId}/participants`, { login: participantLogin })
+          .then(response => {
+            // udało się
+            console.log(`Uczestnik dodany do meetingu ${meetingId}`);
+            meeting.participants.push(participantLogin);
+          })
+          .catch(error => {
+            // nie udało się
+            console.error(`Nie udało się dodać uczestnika do meetingu ${meetingId}`, error);
+          });
     },
+
+
     removeMeetingParticipant(meeting) {
       meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
     },
